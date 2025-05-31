@@ -12,6 +12,20 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class FluentTryAddServiceCollectionExtensions
 {
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="configurator"></param>
+    /// <returns></returns>
+    public static IServiceCollection FluentlyTryAdd(this IServiceCollection source, Action<FluentTryAddConfiguration> configurator)
+    {
+        var configuration = new FluentTryAddConfiguration(source);
+        configurator.AssertNotNull(nameof(configurator))(configuration);
+
+        return source;
+    }
+
+    /// <summary>
     /// Calls <c>TryAdd</c> and returns the original <see cref="IServiceCollection"/>
     /// </summary>
     /// <param name="source"></param>

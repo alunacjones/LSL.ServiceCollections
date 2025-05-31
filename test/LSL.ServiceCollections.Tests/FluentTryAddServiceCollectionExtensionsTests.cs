@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +23,67 @@ public class FluentTryAddServiceCollectionExtensionsTests
         [
             ServiceDescriptor.Transient(typeof(TestClass), typeof(TestClass)),
             ServiceDescriptor.Transient(typeof(ITestClass), typeof(TestClass))
+        ]);
+    }
+
+    [Test]
+    public void TryToAdd_WithConfigurator_Transients()
+    {
+        var services = new ServiceCollection()
+            .FluentlyTryAdd(s => s
+                .Transient<TestClass>()
+                .Transient<TestClass>()
+                .Transient<ITestClass, TestClass>()
+                .Transient<ITestClass, TestClass>()
+            );
+
+        using var assertionScope = new AssertionScope();
+
+        services.Should().BeEquivalentTo(
+        [
+            ServiceDescriptor.Transient(typeof(TestClass), typeof(TestClass)),
+            ServiceDescriptor.Transient(typeof(ITestClass), typeof(TestClass))
+        ]);
+    }
+
+    [Test]
+    public void TryToAdd_WithConfigurator_Scoped()
+    {
+        var services = new ServiceCollection()
+            .FluentlyTryAdd(s => s
+                .Scoped<TestClass>()
+                .Scoped<TestClass>()
+                .Scoped<ITestClass, TestClass>()
+                .Scoped<ITestClass, TestClass>()
+            );
+
+        using var assertionScope = new AssertionScope();
+
+        services.Should().BeEquivalentTo(
+        [
+            ServiceDescriptor.Scoped(typeof(TestClass), typeof(TestClass)),
+            ServiceDescriptor.Scoped(typeof(ITestClass), typeof(TestClass))
+        ]);
+    }
+
+    [Test]
+    public void TryToAdd_WithConfigurator_Singleton()
+    {
+        var services = new ServiceCollection()
+            .FluentlyTryAdd(s => s
+                .Singleton<TestClass>()
+                .Singleton<TestClass>()
+                .Singleton<ITestClass, TestClass>()
+                .Singleton<ITestClass, TestClass>()
+                .Descriptor(ServiceDescriptor.Singleton(typeof(ITestClass), typeof(TestClass)))
+            );
+
+        using var assertionScope = new AssertionScope();
+
+        services.Should().BeEquivalentTo(
+        [
+            ServiceDescriptor.Singleton(typeof(TestClass), typeof(TestClass)),
+            ServiceDescriptor.Singleton(typeof(ITestClass), typeof(TestClass))
         ]);
     }
 

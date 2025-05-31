@@ -4,4 +4,8 @@
 
 # LSL.ServiceCollections
 
-Provide package documentation here.
+A library providing various extensions to `IServiceCollection`
+
+At present it contains:
+
+* Fluently `TryAdd` for all lifetimes (all methods return the original `IServiceCollection` for further chaining)
