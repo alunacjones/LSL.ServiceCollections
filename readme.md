@@ -21,12 +21,21 @@ More in-depth documentation can be found [here](https://alunacjones.github.io/LS
 var services = new ServiceCollection()
     .FluentlyTryAdd(s => s
         .Singleton<TestClass>()
+                    
+        // This will not be done as we have already added it
         .Singleton<TestClass>()
         .Singleton<ITestClass, TestClass>()
+                    
+        // This will not be done as we have already added it
         .Singleton<ITestClass, TestClass>()
+        .Transient<TestClass2>()
+                    
+        // This will not be done as we have already added it (as a transient)
+        .Scoped<TestClass2>()
         .Descriptor(ServiceDescriptor.Singleton(typeof(ITestClass), typeof(TestClass)))
     );
 
-// services will only have `TestClass` and `ITestClass` registered
+// services will only have `TestClass`, `TestClass2` and `ITestClass` registered	}s
 ```
+
 <!-- END:HIDE -->
