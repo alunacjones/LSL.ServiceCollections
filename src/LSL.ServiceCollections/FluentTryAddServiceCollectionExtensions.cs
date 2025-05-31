@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class FluentTryAddServiceCollectionExtensions
 {
     /// <summary>
-    /// 
+    /// Fluently to try add services via a configurator
     /// </summary>
     /// <param name="source"></param>
     /// <param name="configurator"></param>
